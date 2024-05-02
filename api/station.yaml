@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: Station test API
+  description: Station test API
+  version: 1.0.0
+servers:
+  - url: 'https://api-energy-k8s.test.virtaglobal.com/v1'
+paths:
+  /tests/{stationId}:
+    post:
+      description: |
+        Test API to talk to virtual charging stations to verify their functionality. This single API allows sending
+        different commands to the stations and read the values back.
+        
+        The task is two fold:
+        1. Create exploratory testing report where you describe the test scenario and the result by actually executing the
+        tests against the API.
+        2. Code to automate the scenarios that you think are valid to be added as automation. No test automation framework setup
+        (we don't want to see a setup for robot framework for example). You can use any programming languages that you see fit
+      parameters:
+        - name: stationId
+          in: path
+          schema:
+            type: integer
+            required: true
+            description: The ID of the station to talk to, there are stations 1-5 in the test environment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationTestRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StationGetIntervalResponse'
+                  - $ref: '#/components/schemas/StationGetVersionResponse'
+                  - $ref: '#/components/schemas/StationSetValuesResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The error message
+
+components:
+  schemas:
+    StationTestRequest:
+      type: object
+      properties:
+        command:
+          type: string
+          description: |
+            Determines the command to send to the station. They have the following meaning
+              - getVersion returns the version of the station is currently running
+              - getInterval returns the interval the station is reporting values
+              - setValues sets the interval the station is reporting values
+          enum:
+            - getVersion
+            - getInterval
+            - setValues
+        payload:
+          type: integer
+          description: The interval the station is reporting values. Required to be sent when the command is setValues
+      required:
+        - command
+    StationGetIntervalResponse:
+      type: object
+      properties:
+        result:
+          type: integer
+          description: The interval the station is currently reporting values
+    StationGetVersionResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The version of the station for example 1.5 or 1.6
+    StationSetValuesResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The result on the set operation
+          enum:
+            - OK
+            - FAILED

@@ -1,0 +1,26 @@
+{
+  "name": "virta-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandergallen/virta-assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/alexandergallen/virta-assignment/issues"
+  },
+  "homepage": "https://github.com/alexandergallen/virta-assignment#readme",
+  "devDependencies": {
+    "chai": "^5.1.0"
+  },
+  "dependencies": {
+    "mocha": "^10.4.0"
+  }
+}
