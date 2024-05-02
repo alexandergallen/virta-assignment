@@ -10,6 +10,7 @@ export const getVersion = async (station) => {
       "Content-Type": "application/json",
     },
   });
+  // Check if request is succesfull and return proper response with error code and message
   assert(
     response.status === 200,
     `Failed to get version: ${response.statusText}, code ${response.status}`
@@ -25,6 +26,7 @@ export const getInterval = async (station) => {
       "Content-Type": "application/json",
     },
   });
+  // Check if request is succesfull and return proper response with error code and message
   assert(
     response.status === 200,
     `Failed to get interval: ${response.statusText}, code ${response.status}`
@@ -40,6 +42,7 @@ export const setInterval = async (station, interval) => {
       "Content-Type": "application/json",
     },
   });
+  // Check if request is succesfull and return proper response with error code and message
   assert(
     response.status === 200,
     `Failed to set interval: ${response.statusText}, code ${response.status}`
