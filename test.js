@@ -7,7 +7,12 @@ for (const station of stations) {
     describe("Version API", () => {
       it("should return version", async () => {
         const res = await getVersion(station.id);
-        assert.equal(res.result, station.version, "Version missmatch");
+        // Check if version is returned or check for exact version if version specified for station in test data
+        if (station.version) {
+          assert.equal(res.result, station.version, "Version missmatch");
+        } else {
+          assert.exists(res.result, "No version returned from API");
+        }
       });
     });
     describe("Interval API", () => {
@@ -15,14 +20,13 @@ for (const station of stations) {
       let newInterval;
       it("should return interval", async () => {
         const res = await getInterval(station.id);
-        assert.exists(res.result, "Interval doesn't exist");
+        assert.exists(res.result, "No Interval returned from API");
         existingInterval = res.result;
       });
-      // Set interval
       it("should set interval", async () => {
+        // Add 1 to existing interval so it does not match existing value
         newInterval = existingInterval + 1;
         const setRes = await setInterval(station.id, newInterval);
-        console.log("setRes", setRes);
         assert.equal(setRes.result, "OK", "Failed to set new interval");
         const getRes = await getInterval(station.id);
         assert.equal(

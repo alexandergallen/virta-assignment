@@ -29,7 +29,6 @@ export const getInterval = async (station) => {
     response.status === 200,
     `Failed to get interval: ${response.statusText}, code ${response.status}`
   );
-  console.log("what");
   return await response.json();
 };
 
